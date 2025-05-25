@@ -3,3 +3,4 @@ tensorflow==2.17.0
 opencv-python
 numpy
 gunicorn
+Flask-CORS
