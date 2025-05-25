@@ -12,8 +12,8 @@ app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 
 # Load models
-classification_model = load_model('fine_tuned_mobilenetv2.h5')
-bbox_model = load_model('mobilenet_bbox_model.h5')
+classification_model = load_model('backend/fine_tuned_mobilenetv2.h5')
+bbox_model = load_model('backend/mobilenet_bbox_model.h5')
 
 # Load class names
 with open('class_names.json', 'r') as f:
