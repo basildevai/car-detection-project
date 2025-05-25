@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Detection Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center p-6">
+    <!-- Heading -->
+    <h1 class="text-4xl font-bold text-gray-800 mb-8">Car Detection Predictor</h1>
+    
+    <!-- Project Description -->
+    <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl mb-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Project Overview</h2>
+        <p class="text-gray-600 leading-relaxed">
+            This capstone project develops a deep learning system for car object detection, targeting automotive surveillance. Using a dataset of 16,185 images, the system localizes cars with bounding boxes using a MobileNet-based model, achieving a test IOU of 0.79. The updated report includes a revised abstract, detailed object detection sections, a step-by-step solution walkthrough, model evaluation, benchmark comparisons, visualizations, implications, limitations, and reflective conclusions, aligned with insights from the Jupyter Notebook. The project was collaboratively developed by a dedicated team, with tasks distributed to ensure comprehensive enhancements.
+        </p>
+    </div>
+
+    <!-- File Upload (Prediction Interface) -->
+    <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-lg mb-8">
+        <input
+            type="file"
+            id="imageInput"
+            accept="image/*"
+            class="mb-6 w-full text-sm text-gray-600 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
+        />
+        <div id="loading" class="hidden flex justify-center mb-6">
+            <div class="animate-spin h-8 w-8 border-4 border-blue-600 border-t-transparent rounded-full"></div>
+        </div>
+        <p id="error" class="hidden text-red-600 mb-6 text-center"></p>
+        <div id="imageContainer" class="mb-6 flex flex-col items-center hidden">
+            <canvas id="imageCanvas" class="border rounded-lg shadow-sm"></canvas>
+            <p id="bboxCoords" class="text-gray-700 mt-2 text-center"></p>
+        </div>
+    </div>
+
+    <!-- Team Members -->
+    <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl mb-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Our Team</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="text-center p-4 bg-gray-50 rounded-md">
+                <div class="flex items-center justify-center space-x-2">
+                    <p class="text-lg font-medium text-gray-700">Basil Chacko Mathew</p>
+                    <svg class="w-5 h-5 text-blue-600 cursor-pointer email-toggle" data-email="basilchackomathew@gmail.com" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l9-6 9 6v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l9 6 9-6" />
+                    </svg>
+                </div>
+                <p class="email text-sm text-blue-600 mt-2 hidden"><a href="mailto:basilchackomathew@gmail.com">basilchackomathew@gmail.com</a></p>
+            </div>
+            <div class="text-center p-4 bg-gray-50 rounded-md">
+                <div class="flex items-center justify-center space-x-2">
+                    <p class="text-lg font-medium text-gray-700">Lovish Jain</p>
+                    <svg class="w-5 h-5 text-blue-600 cursor-pointer email-toggle" data-email="lovish79214@gmail.com" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l9-6 9 6v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l9 6 9-6" />
+                    </svg>
+                </div>
+                <p class="email text-sm text-blue-600 mt-2 hidden"><a href="mailto:lovish79214@gmail.com">lovish79214@gmail.com</a></p>
+            </div>
+            <div class="text-center p-4 bg-gray-50 rounded-md">
+                <div class="flex items-center justify-center space-x-2">
+                    <p class="text-lg font-medium text-gray-700">Umang Kothari</p>
+                    <svg class="w-5 h-5 text-blue-600 cursor-pointer email-toggle" data-email="umangkothari13@gmail.com" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l9-6 9 6v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l9 6 9-6" />
+                    </svg>
+                </div>
+                <p class="email text-sm text-blue-600 mt-2 hidden"><a href="mailto:umangkothari13@gmail.com">umangkothari13@gmail.com</a></p>
+            </div>
+            <div class="text-center p-4 bg-gray-50 rounded-md">
+                <div class="flex items-center justify-center space-x-2">
+                    <p class="text-lg font-medium text-gray-700">Tamilarasan D</p>
+                    <svg class="w-5 h-5 text-blue-600 cursor-pointer email-toggle" data-email="tamil86@gmail.com" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l9-6 9 6v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l9 6 9-6" />
+                    </svg>
+                </div>
+                <p class="email text-sm text-blue-600 mt-2 hidden"><a href="mailto:tamil86@gmail.com">tamil86@gmail.com</a></p>
+            </div>
+            <div class="text-center p-4 bg-gray-50 rounded-md">
+                <div class="flex items-center justify-center space-x-2">
+                    <p class="text-lg font-medium text-gray-700">Vineet Chaswal</p>
+                    <svg class="w-5 h-5 text-blue-600 cursor-pointer email-toggle" data-email="vinni.coolash@gmail.com" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l9-6 9 6v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l9 6 9-6" />
+                    </svg>
+                </div>
+                <p class="email text-sm text-blue-600 mt-2 hidden"><a href="mailto:vinni.coolash@gmail.com">vinni.coolash@gmail.com</a></p>
+            </div>
+            <div class="text-center p-4 bg-gray-50 rounded-md">
+                <div class="flex items-center justify-center space-x-2">
+                    <p class="text-lg font-medium text-gray-700">Ashok Singh</p>
+                    <svg class="w-5 h-5 text-blue-600 cursor-pointer email-toggle" data-email="ashoksingh787@gmail.com" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l9-6 9 6v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l9 6 9-6" />
+                    </svg>
+                </div>
+                <p class="email text-sm text-blue-600 mt-2 hidden"><a href="mailto:ashoksingh787@gmail.com">ashoksingh787@gmail.com</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Email Toggle Functionality
+        const emailToggles = document.querySelectorAll('.email-toggle');
+        emailToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const emailElement = toggle.parentElement.nextElementSibling;
+                emailElement.classList.toggle('hidden');
+            });
+        });
+
+        // Prediction Functionality
+        const imageInput = document.getElementById('imageInput');
+        const loading = document.getElementById('loading');
+        const error = document.getElementById('error');
+        const imageContainer = document.getElementById('imageContainer');
+        const canvas = document.getElementById('imageCanvas');
+        const bboxCoords = document.getElementById('bboxCoords');
+        const ctx = canvas.getContext('2d');
+
+        imageInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // Reset UI
+            loading.classList.remove('hidden');
+            error.classList.add('hidden');
+            imageContainer.classList.add('hidden');
+            error.textContent = '';
+            bboxCoords.textContent = '';
+
+            // Display image
+            const reader = new FileReader();
+            reader.onload = () => {
+                const img = new Image();
+                img.src = reader.result;
+                img.onload = () => {
+                    canvas.width = 224;
+                    canvas.height = 224;
+                    ctx.drawImage(img, 0, 0, 224, 224);
+                    imageContainer.classList.remove('hidden');
+                };
+            };
+            reader.readAsDataURL(file);
+
+            // Send image to backend
+            const formData = new FormData();
+            formData.append('image', file);
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                loading.classList.add('hidden');
+
+                if (data.error) {
+                    error.textContent = data.error;
+                    error.classList.remove('hidden');
+                } else if (data.bounding_box) {
+                    // Draw bounding box
+                    const [x0, y0, x1, y1] = data.bounding_box.map(v => v * 224);
+                    ctx.strokeStyle = 'red';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+                    // Display coordinates
+                    bboxCoords.textContent = `Bounding Box: [${data.bounding_box.map(v => v.toFixed(3)).join(', ')}]`;
+                }
+            } catch (err) {
+                loading.classList.add('hidden');
+                error.textContent = 'Failed to connect to the server';
+                error.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
