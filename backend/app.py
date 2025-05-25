@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+dfrom flask import Flask, request, jsonify, send_from_directory
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 from flask_cors import CORS
@@ -11,7 +11,7 @@ app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 CORS(app)  # Enable CORS for potential separate frontend hosting
 
 # Load model directly
-bbox_model = load_model('mobilenet_bbox_model.h5')
+bbox_model = load_model('backend/mobilenet_bbox_model.h5')
 
 def process_image(image):
     img = cv2.resize(image, (224, 224))
