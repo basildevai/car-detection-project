@@ -14,7 +14,7 @@ CORS(app)  # Enable CORS for potential separate frontend hosting
 # Load model directly
 # bbox_model = load_model('backend/mobilenet_bbox_model.h5')
 # Load model with custom objects
-bbox_model = load_model('mobilenet_bbox_model.h5', custom_objects={'mse': tensorflow.keras.losses.MeanSquaredError()})
+bbox_model = load_model('backend/mobilenet_bbox_model.h5', custom_objects={'mse': tensorflow.keras.losses.MeanSquaredError()})
 
 def process_image(image):
     img = cv2.resize(image, (224, 224))
