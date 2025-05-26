@@ -5,6 +5,7 @@ from flask_cors import CORS
 import numpy as np
 import cv2
 import os
+import tensorflow.keras.losses
 
 app = Flask(__name__, static_folder='static')
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
